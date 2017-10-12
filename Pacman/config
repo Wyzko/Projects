@@ -1,0 +1,16 @@
+thorus:	1
+gridSizeX: 90
+gridSizeY: 90
+boxSize: 10
+delay: 17
+sheduling: 'fair'
+nbTicks: 0
+grid:	0
+seed: 0
+trace: 0
+refresh: 1
+nbHunters: 3
+WallPercent: 10
+SpeedHunter: 4
+SpeedAvatar: 2
+DefenderLife: 200
