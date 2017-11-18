@@ -1,13 +1,16 @@
+## Imports
 from core import *
 
-
+## Fishes class (inherit from Agent)
 class Fishes(Agent):
+    # Constructor
     def __init__(self, posX, posY):
         Agent.__init__(self, posX, posY)
         self.FishBreedTime = FishBreedTime
         self.countBreed = 0
         self.isNew = False
 
+    # Method to create a fish agent at a random position
     def createAgents(nbFishes):
         i = 0
         while(i != nbFishes):
@@ -19,39 +22,42 @@ class Fishes(Agent):
                 agents.append(fish)
                 i += 1
 
+    # Method that define the behavior of a fish
     def doIt(self):
-        #creation de la liste des carrés autour de l'agent
+        # Creation of the list of all the ajadent squares of the agent
         possibleSquareList = [(self.posX - 1, self.posY), (self.posX, self.posY + 1), (self.posX + 1, self.posY), (self.posX, self.posY - 1)]
 
-        # Si thorus = 1, on se déplace
+        # If thorus = 1, we can move
         if (thorus):
             possibleSquareList = map(lambda e : (e[0] % gridSizeX, e[1] % gridSizeY), possibleSquareList)
 
-        # Si thorus = 0, on supprime les case au bord
+        # If thorus = 0, we delete the squares at the edges
         else:
             possibleSquareList = [e for e in possibleSquareList if not( e[0] < 0 or e[0] >= gridSizeX or e[1] < 0 or e[1] >= gridSizeY) ]
 
-        #on garde seulement les cases libre
+        # List of all the free squares
         freeSquareList = [ e for e in possibleSquareList if not(Environnement.grille[e[1]][e[0]] != 0) ]
-        # Si aucune casse disponible, on reste sur place, countBreed + 1
+        # If there is no free squares, we don't move and  countBreed += 1
         if(len(freeSquareList) == 0):
             self.countBreed += 1
             if(self.countBreed == self.FishBreedTime):
-                self.countBreed -= 1 #je pense que c'est de faire -- que 0,parait plus logique/naturel
+                self.countBreed -= 1
             self.isNew = False;
-        # Si la case destination est libre, on se déplace, countBreed + 1
+
+        # If the destination is free, we move and  countBreed += 1
         else:
-            # Récupération position actuelle
+            # Actual position
             posXC = self.posX
             posYC = self.posY
 
-            # choice of the new position
+            # Choice of the new position
             newSquare =random.choice(freeSquareList);
 
-            # Calul de la position après le déplacement
+            # Compute the position after the move
             posXF = newSquare[0]
             posYF = newSquare[1]
-            # il se reproduit
+
+            # If countBreed is equal to the breed time, the fish reproduce
             if(self.countBreed == self.FishBreedTime):
                 fish = Fishes(posXC, posYC)
                 Environnement.grille[posYC][posXC] = fish
@@ -69,13 +75,16 @@ class Fishes(Agent):
             self.posY = posYF
             Environnement.grille[self.posY][self.posX] = self
 
+    # Getter on the color of the fish
     def getColor(self):
         if (self.isNew):
             return "green"
         else: return "blue"
 
 
+## Sharks class (inherit from Agent)
 class Sharks(Agent):
+    # Constructor
     def __init__(self, posX, posY):
         Agent.__init__(self, posX, posY)
         self.SharkBreedTime = SharkBreedTime
@@ -84,6 +93,7 @@ class Sharks(Agent):
         self.countStarve = 0
         self.isNew = False
 
+    # Method to create a shark agent at a random position
     def createAgents(nbSharks):
         i = 0
         while(i != nbSharks):
@@ -95,61 +105,62 @@ class Sharks(Agent):
                 agents.append(shark)
                 i += 1
 
+    # Method that define the behavior of a shark
     def doIt(self):
-        #creation de la liste des carrés autour de l'agent
+        # Creation of the list of all the ajadent squares of the agent
         possibleSquareList = [(self.posX - 1, self.posY), (self.posX, self.posY + 1), (self.posX + 1, self.posY), (self.posX, self.posY - 1)]
 
-        # Récupération position actuelle
+        # Actual position
         posXC = self.posX
         posYC = self.posY
         movement = False
         eat = False
         newSquare = None
-        #for e in possibleSquareList:
-        #    print(e[0], e[1])
-        # Si thorus = 1, on se déplace
+
+        # If thorus = 1, we can move
         if (thorus):
-            #possibleSquareList = map(lambda e : (e[0] % gridSizeX, e[1] % gridSizeY), possibleSquareList)
             possibleSquareList2 = [];
             for e in possibleSquareList:
                 possibleSquareList2.append((e[0] % gridSizeX, e[1] % gridSizeY));
             possibleSquareList = possibleSquareList2;
 
 
-        # Si thorus = 0, on supprime les case au bord
+        # If thorus = 0, we delete the squares at the edges
         else:
             possibleSquareList = [e for e in possibleSquareList if not( e[0] < 0 or e[0] >= gridSizeX or e[1] < 0 or e[1] >= gridSizeY) ]
 
 
-        #on gade seulement les cases occupe par des poissons
+        # List of all the squares with a fish
         fishSquareList = [ e for e in possibleSquareList if (Environnement.grille[e[1]][e[0]] != 0 and Environnement.grille[e[1]][e[0]].__class__.__name__ == "Fishes") ]
         if(len(fishSquareList) == 0):
             freeSquareList = [ e for e in possibleSquareList if not(Environnement.grille[e[1]][e[0]] != 0) ]
-            # Si aucune casse disponible, on reste sur place, countBreed + 1
+            # If there is no free squares, we don't move and  countBreed += 1
             if(len(freeSquareList) == 0):
                 self.countBreed += 1
                 if(self.countBreed == self.SharkBreedTime):
-                    self.countBreed -= 1 #je pense que c'est de faire -- que 0,parait plus logique/naturel
+                    self.countBreed -= 1
                 self.isNew = False;
-            # Si la case destination est libre, on se déplace, countBreed + 1
+
+            # If the destination is free, we move and  countBreed += 1
             else:
                 # choice of the new position
                 newSquare =random.choice(freeSquareList)
                 movement = True
         else:
-            # choice of the new position
+            # Choice of the new position
             newSquare =random.choice(fishSquareList)
             movement = True
             eat = True
         if (movement):
-            # Calul de la position après le déplacement
+            # Compute the position after the move
             posXF = newSquare[0]
             posYF = newSquare[1]
 
             if (eat):
                 self.countStarve = 0
                 agents.remove(Environnement.grille[posYF][posXF])
-            # il se reproduit
+
+            # If countBreed is equal to the breed time, the fish reproduce
             if(self.countBreed == self.SharkBreedTime):
                 shark = Sharks(posXC, posYC)
                 Environnement.grille[posYC][posXC] = shark
@@ -168,22 +179,22 @@ class Sharks(Agent):
             Environnement.grille[self.posY][self.posX] = self
         self.countStarve += 1
 
+        # If a shark is straving, he dies
         if(self.countStarve == self.SharkStarveTime):
             Environnement.grille[self.posY][self.posX] = 0
             agents.remove(self)
 
-
-        # Observation du voisinnage en fonction de la position
-        # pass
-
+    # Getter on the color of the shark
     def getColor(self):
         if (self.isNew):
             return "pink"
         else: return "red"
 
 
+## Fonction to create all the agents of the simulation
 def createAgents():
     Fishes.createAgents(nbFishes)
     Sharks.createAgents(nbSharks)
 
+## Application start here
 SMA.run(createAgents())

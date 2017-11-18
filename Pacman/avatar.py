@@ -17,7 +17,7 @@ def dijkstragen(i,j):
     while(not queue.empty()):
         queue.get()()
 
-#"" Method to calculate the shortest path with the Dijkstra algorithm
+## Method to calculate the shortest path with the Dijkstra algorithm
 def dijkstra(i, j, dist, dirX, dirY):
     if (Environment.grid[j][i].__class__.__name__ != "Wall" ):
         if gridDijskra[j][i] == -1 or dist < gridDijskra[j][i]:
@@ -355,7 +355,7 @@ class Drawing(DrawApp):
                 print("end")
 
 
-# Fonction to create all the agents of the simulation
+## Fonction to create all the agents of the simulation
 def createAgents():
     Wall.createAgents(WallPercent)
     Avatar.createAgents()

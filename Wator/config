@@ -16,8 +16,3 @@ SharkStarveTime: 10
 FishBreedTime: 2
 nbSharks:	700
 nbFishes:	700
-nbHunters: 3
-WallPercent: 10
-SpeedHunter: 4
-SpeedAvatar: 2
-DefenderLife: 200
