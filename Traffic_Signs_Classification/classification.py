@@ -165,7 +165,7 @@ def sift(im1, im2, name1, name2):
 
         # Computation of the hommography with the RANSAC method
         H, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,8.0)
-        if H!=None:
+        if H is not None:
             estimatedPoints = cv2.perspectiveTransform(src_pts,H)
 
             distance = computeDistance(estimatedPoints, dst_pts)
