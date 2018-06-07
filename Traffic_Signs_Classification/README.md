@@ -2,7 +2,7 @@
 
 The aim of this project is to discover the technics for pattern recognition by the study of the traffic signs classification.
 
-The application was developed with Python 2.7, OpenCV 3, numpy and Mathplotlib.
+The application was developed with Python 2.7, OpenCV 3, numpy and Matplotlib.
 
 ### Files
 The only file of this project is classification.py. It contains all the code for the classification of traffic signs.
